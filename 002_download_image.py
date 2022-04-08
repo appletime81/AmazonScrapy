@@ -11,5 +11,6 @@ def save_img(csv_filename):
         os.system(f"python -m wget {url} -o {root}")
         os.rename(root + url.split("/")[-1], root + filename)
 
+
 if __name__ == "__main__":
     save_img("紅茶/amazon_data.csv")
