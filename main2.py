@@ -1,6 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
-
+from pprint import pprint
 
 def get_html(url):
     headers = {
@@ -22,6 +22,7 @@ def get_html(url):
 
 def analyze_html(html):
     star_number = html.find_all(attrs={"class": "a-icon-alt"})  # 找評價
+    pprint(star_number)
 
 
 if __name__ == "__main__":
