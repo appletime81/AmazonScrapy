@@ -131,8 +131,8 @@ if __name__ == "__main__":
     key_word = "紅茶"
     price_threshold_max = None
     price_threshold_min = None
-    star_threshold_max = None
-    star_threshold_min = None
+    star_threshold_max = 5
+    star_threshold_min = 4
     page_numbers = get_page_numbers(get_html(f"https://www.amazon.com/s?k={key_word}"))
     page_numbers = int(page_numbers)
     all_star_list = list()
@@ -140,7 +140,13 @@ if __name__ == "__main__":
     all_img_url_list = list()
     for i in range(page_numbers):
         html = get_html(f"https://www.amazon.com/s?k={key_word}&page={i + 1}")
-        star_list, price_list, img_url_list = analyze_html(html)
+        star_list, price_list, img_url_list = analyze_html(
+            html,
+            price_threshold_max,
+            price_threshold_min,
+            star_threshold_max,
+            star_threshold_min,
+        )
         all_star_list.extend(star_list)
         all_price_list.extend(price_list)
         all_img_url_list.extend(img_url_list)
@@ -148,6 +154,3 @@ if __name__ == "__main__":
     print(len(all_price_list))
     print(len(all_img_url_list))
     save_as_csv(key_word, all_star_list, all_price_list, all_img_url_list)
-    # https://www.amazon.com/s?k=%E6%89%8B%E6%A9%9F&i=mobilee&rh=n%3A7072561011%2Cp_36%3A14674873011%2Cp_72%3A2491150011&dc&language=zh_TW&qid=1649076307&rnid=2491147011&ref=sr_nr_p_72_2
-    # star_list, price_list, img_url_list = analyze_html(html)
-    # save_as_csv(key_word, star_list, price_list, img_url_list)
