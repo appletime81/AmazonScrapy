@@ -58,41 +58,22 @@ def analyze_html(
     img_srcs = html.find_all(
         attrs={
             # "class": "a-section aok-relative s-image-fixed-height"
-            "class": "a-section aok-relative s-image-square-aspect"
+            "class": "a-section aok-relative s-image-square-aspect"  # 如果發現無抓取到任何資料請"改用上面被註解那行，此行註解掉"
         }
     )  # 找圖片
     for img_src in img_srcs:
         img_src = img_src.find_all(attrs={"class": "s-image"})
         img_src_list.append(img_src[0]["srcset"].split(" ")[-2])
 
-    if price_threshold_max is not None and price_threshold_min is not None:
-        price_flag = True
-    if star_threshold_max is not None and star_threshold_min is not None:
-        star_flag = True
     print(
         "-----------------------------------------------------------------------------------"
     )
     for star, price, img_src in zip(star_number, prices, img_src_list):
-        tmp_star = star
-        tmp_price = price
-        tmp_img_src = img_src
-        if price_flag and float(price_threshold_min) <= float(price) <= float(
-            price_threshold_max
-        ):
-            tmp_price = price
-        if star_flag and float(star_threshold_min) <= float(star) <= float(
-            star_threshold_max
-        ):
-            tmp_star = star
-
-        if star_flag or price_flag:
-            star_list.append(tmp_star)
-            price_list.append(tmp_price)
-            img_url_list.append(tmp_img_src)
-        else:
+        if (float(price_threshold_min) <= float(price) <= float(price_threshold_max)) and (float(star_threshold_min) <= float(star) <= float(star_threshold_max)):
             star_list.append(star)
             price_list.append(price)
-            img_url_list.append(tmp_img_src)
+            img_url_list.append(img_src)
+
         print("評價:", star)
         print("價格:", price)
         print("圖片:", img_src)
@@ -128,12 +109,12 @@ def get_page_numbers(html):
 
 
 if __name__ == "__main__":
-    key_word = "紅茶"
-    folder_name = "紅茶"
-    price_threshold_max = 30  # 設定價格最大值
-    price_threshold_min = 20  # 設定價格最小值
+    key_word = "kettle"
+    folder_name = "kettle"
+    price_threshold_max = 20  # 設定價格最大值
+    price_threshold_min = 10  # 設定價格最小值
     star_threshold_max = 5  # 設定評價最大星數
-    star_threshold_min = 4  # 設定評價最小星數
+    star_threshold_min = 0  # 設定評價最小星數
     target_url = f"https://www.amazon.com/s?k={key_word}"  # 可直接更換為大類的網址或任一搜尋結果頁面
     page_numbers = get_page_numbers(get_html(target_url))
     page_numbers = int(page_numbers)
