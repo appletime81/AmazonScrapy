@@ -129,17 +129,19 @@ def get_page_numbers(html):
 
 if __name__ == "__main__":
     key_word = "紅茶"
-    price_threshold_max = None
-    price_threshold_min = None
-    star_threshold_max = 5
-    star_threshold_min = 4
-    page_numbers = get_page_numbers(get_html(f"https://www.amazon.com/s?k={key_word}"))
+    folder_name = "紅茶"
+    price_threshold_max = 30  # 設定價格最大值
+    price_threshold_min = 20  # 設定價格最小值
+    star_threshold_max = 5  # 設定評價最大星數
+    star_threshold_min = 4  # 設定評價最小星數
+    target_url = f"https://www.amazon.com/s?k={key_word}"  # 可直接更換為大類的網址或任一搜尋結果頁面
+    page_numbers = get_page_numbers(get_html(target_url))
     page_numbers = int(page_numbers)
     all_star_list = list()
     all_price_list = list()
     all_img_url_list = list()
     for i in range(page_numbers):
-        html = get_html(f"https://www.amazon.com/s?k={key_word}&page={i + 1}")
+        html = get_html(f"{target_url}&page={i + 1}")
         star_list, price_list, img_url_list = analyze_html(
             html,
             price_threshold_max,
@@ -153,4 +155,4 @@ if __name__ == "__main__":
     print(len(all_star_list))
     print(len(all_price_list))
     print(len(all_img_url_list))
-    save_as_csv(key_word, all_star_list, all_price_list, all_img_url_list)
+    save_as_csv(folder_name, all_star_list, all_price_list, all_img_url_list)
