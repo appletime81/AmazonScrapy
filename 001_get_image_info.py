@@ -104,18 +104,21 @@ def save_as_csv(key_word, star_list, price_list, img_url_list):
 
 
 def get_page_numbers(html):
+    # print(html.prettify())
     page_numbers = html.find(attrs={"class": "s-pagination-item s-pagination-disabled"})
+                                             #s-pagination-item s-pagination-disabled
+    print(page_numbers)
     return page_numbers.text
 
 
 if __name__ == "__main__":
     key_word = "kettle"
-    folder_name = "kettle"
+    folder_name = "test"
     price_threshold_max = 20  # 設定價格最大值
     price_threshold_min = 10  # 設定價格最小值
     star_threshold_max = 5  # 設定評價最大星數
     star_threshold_min = 0  # 設定評價最小星數
-    target_url = f"https://www.amazon.com/s?k={key_word}"  # 可直接更換為大類的網址或任一搜尋結果頁面
+    target_url = f"https://www.amazon.com/s?i=specialty-aps&bbn=16225010011&rh=n%3A%2116225010011%2Cn%3A15342811&ref=nav_em__nav_desktop_sa_intl_household_supplies_0_2_16_4"  # 可直接更換為大類的網址或任一搜尋結果頁面
     page_numbers = get_page_numbers(get_html(target_url))
     page_numbers = int(page_numbers)
     all_star_list = list()
