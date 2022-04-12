@@ -2,6 +2,7 @@ import requests
 import re
 import os
 import pandas as pd
+import time
 
 from bs4 import BeautifulSoup
 from pprint import pprint
@@ -63,7 +64,11 @@ def analyze_html(
     )  # 找圖片
     for img_src in img_srcs:
         img_src = img_src.find_all(attrs={"class": "s-image"})
-        img_src_list.append(img_src[0]["srcset"].split(" ")[-2])
+        try:
+            img_src_list.append(img_src[0]["srcset"].split(" ")[-2])
+        except IndexError:
+            print("*****************************")
+            print("img src: ", img_src)
 
     print(
         "-----------------------------------------------------------------------------------"
@@ -108,6 +113,7 @@ def get_page_numbers(html):
     page_numbers = html.find(attrs={"class": "s-pagination-item s-pagination-disabled"})
                                              #s-pagination-item s-pagination-disabled
     print(page_numbers)
+    time.sleep(5)
     return page_numbers.text
 
 
